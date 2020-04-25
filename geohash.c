@@ -77,7 +77,7 @@ static char *odd_neighbors[] = {"bc01fg45238967deuvhjyznpkmstqrwx",
 static char *even_borders[] = {"prxz", "bcfguvyz", "028b", "0145hjnp"};
 static char *odd_borders[] = {"bcfguvyz", "prxz", "0145hjnp", "028b"};
 
-unsigned int index_for_char(char c, char *string) {
+int index_for_char(char c, char *string) {
     
     int index = -1;
     int string_amount = strlen(string);
@@ -200,7 +200,7 @@ GeoCoord geohash_decode(char *hash) {
         
         if(char_amount) {
             
-            unsigned int char_mapIndex;
+            int char_mapIndex;
             Interval lat_interval = {MAX_LAT, MIN_LAT};
             Interval lng_interval = {MAX_LONG, MIN_LONG};
             Interval *interval;
