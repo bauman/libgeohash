@@ -7,7 +7,7 @@ language: c
 
 
 install:
-  - sudo apt-get install -y cmake
+  - sudo apt-get install -y cmake tree
 
 
 script:
