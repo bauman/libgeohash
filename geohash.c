@@ -95,7 +95,7 @@ unsigned int index_for_char(char c, char *string) {
     return index;
 }
 
-char* get_neighbor(char *hash, int direction) {
+char* get_neighbor(const char *hash, int direction) {
     
     int hash_length = strlen(hash);
     
@@ -105,12 +105,16 @@ char* get_neighbor(char *hash, int direction) {
     char **border = is_odd ? odd_borders : even_borders;
     char **neighbor = is_odd ? odd_neighbors : even_neighbors; 
     
-    char *base = malloc(sizeof(char) * 1);
+    char *base = malloc(sizeof(char) * hash_length + 1);
     base[0] = '\0';
     strncat(base, hash, hash_length - 1);
     
-	if(index_for_char(last_char, border[direction]) != -1)
-		base = get_neighbor(base, direction);
+	if(index_for_char(last_char, border[direction]) != -1){
+        char * newBase = get_neighbor(base, direction);
+        strncpy(base, newBase, hash_length);
+        free(newBase);
+	}
+
     
     int neighbor_index = index_for_char(last_char, neighbor[direction]);
     last_char = char_map[neighbor_index];
@@ -242,7 +246,7 @@ GeoCoord geohash_decode(char *hash) {
 }
 
 
-char** geohash_neighbors(char *hash) {
+char** geohash_neighbors(const char *hash) {
 
     char** neighbors = NULL;
     
@@ -263,6 +267,19 @@ char** geohash_neighbors(char *hash) {
     }
     
     return neighbors;
+}
+
+void geohash_free_neighbors(char ** neighbors){
+    int i = 0;
+    if (neighbors){
+        for (i=0; i<8; i++){
+            if (neighbors[i]){
+                free(neighbors[i]);
+                neighbors[i] = NULL;
+            }
+        }
+        free(neighbors);
+    }
 }
 
 GeoBoxDimension geohash_dimensions_for_precision(int precision) {

@@ -69,8 +69,9 @@ extern GeoCoord geohash_decode(char* hash);
  *                  N, NE, E, SE, S, SW, W, NW
  * 					0, 1,  2,  3, 4,  5, 6, 7
  */ 
-extern char** geohash_neighbors(char* hash);
+extern char** geohash_neighbors(const char* hash);
 
+extern void geohash_free_neighbors(char ** neighbors);
 /*
  * Returns the width and height of a precision value.
  */

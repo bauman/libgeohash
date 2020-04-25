@@ -10,6 +10,7 @@
 
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 void check_coords(GeoCoord coord, GeoCoord expected) {
  
@@ -85,6 +86,7 @@ int main() {
     GeoCoord expectedCoord = {42.60498046875, -5.60302734375, 42.626953125, -5.5810546875, 42.5830078125, -5.625};
     check_coords(coord, expectedCoord);
 
+
     
     coord = geohash_decode("ezs42gx");
     expectedCoord = (GeoCoord){42.602920532226562, -5.5817413330078125, 42.603607177734375, -5.581054687500000, 42.60223388671875, -5.582427978515625};
@@ -95,34 +97,43 @@ int main() {
     check_coords(coord, expectedCoord);
     
     // Encoder
-    
+
     char* hash = geohash_encode(42.60498046875, -5.60302734375, 5);
     checkHashes(hash, "ezs42");
-    
+    free(hash);
+
     hash = geohash_encode(40.018141, -105.274858, 12);
     checkHashes(hash, "9xj5smj4w40m");
+    free(hash);
 
     hash = geohash_encode(40.018141, -105.274858, 2);
     checkHashes(hash, "9x");
-    
+    free(hash);
+
     hash = geohash_encode(40.018141, -105.274858, 0);
     checkHashes(hash, "9xj5sm");
-    
+    free(hash);
+
     // Neighbors
     
     char** neighbors = geohash_neighbors("ezs42");
 
     char* expectedNeighbors[8] = {"ezs48", "ezs49", "ezs43", "ezs41", "ezs40", "ezefp", "ezefr", "ezefx"};
     checkNeighbors(neighbors, expectedNeighbors);
-    
+
+    geohash_free_neighbors(neighbors);
+
     expectedNeighbors[0] = "9xj5smj4w40q"; expectedNeighbors[1] = "9xj5smj4w40w";
     expectedNeighbors[2] = "9xj5smj4w40t"; expectedNeighbors[3] = "9xj5smj4w40s";
     expectedNeighbors[4] = "9xj5smj4w40k"; expectedNeighbors[5] = "9xj5smj4w40h";
     expectedNeighbors[6] = "9xj5smj4w40j"; expectedNeighbors[7] = "9xj5smj4w40n";
-    
+
+
     neighbors = geohash_neighbors("9xj5smj4w40m");
     checkNeighbors(neighbors, expectedNeighbors);
-    
+
+    geohash_free_neighbors(neighbors);
+
     return 0;
 }
 

@@ -1,0 +1,21 @@
+sudo: required
+
+dist: bionic
+
+
+language: c
+
+
+install:
+  - sudo apt-get install -y cmake
+
+
+script:
+  - cmake .
+  - make
+  - tree
+  - echo "all the tests should exit 0 if they work"
+  - ./gh_test
+  -
+
+
