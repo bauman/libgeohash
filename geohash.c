@@ -54,6 +54,23 @@ typedef struct IntervalStruct {
     
 } Interval;
 
+// cached results from calling geohash_dimensions_for_precision
+const GeoBoxDimension dimension_cache[] = {
+        {0.0, 0.0}, // 0
+        {45.0, 45.0}, // 1
+        {5.625, 11.25}, // 2
+        {1.40625 , 1.40625 }, // 3
+        {0.17578125 , 0.3515625 }, // 4
+        {0.0439453125 , 0.0439453125 }, // 5
+        {0.0054931640625 , 0.010986328125 }, // 6
+        {0.001373291015625 , 0.001373291015625 }, // 7
+        {0.000171661376953125 , 0.00034332275390625 }, // 8
+        {4.291534423828125e-05 , 4.291534423828125e-05 }, // 9
+        {5.3644180297851562e-06 , 1.0728836059570312e-05 }, // 10
+        {1.3411045074462891e-06 , 1.3411045074462891e-06 }, // 11
+        {1.6763806343078613e-07 , 3.3527612686157227e-07 }, // 12
+};
+
 
 /* Normal 32 characer map used for geohashing */
 static char char_map[33] =  "0123456789bcdefghjkmnpqrstuvwxyz";
@@ -239,6 +256,8 @@ GeoCoord geohash_decode(char *hash) {
             coordinate.east = lng_interval.high;
             coordinate.south = lat_interval.low;
             coordinate.west = lng_interval.low;
+
+            coordinate.dimension = geohash_dimensions_for_precision(i);
         }
     }
     
@@ -287,23 +306,26 @@ GeoBoxDimension geohash_dimensions_for_precision(int precision) {
 	GeoBoxDimension dimensions = {0.0, 0.0};
 	
 	if(precision > 0) {
-	
-		int lat_times_to_cut = precision * 5 / 2;
-		int lng_times_to_cut = precision * 5 / 2 + (precision % 2 ? 1 : 0);
-	
-		double width = 360.0;
-		double height = 180.0;
-	
-		int i;
-		for(i = 0; i < lat_times_to_cut; i++)
-			height /= 2.0;
-		
-		for(i = 0; i < lng_times_to_cut; i++)
-			width /= 2.0;
-		
-		dimensions.width = width;
-		dimensions.height = height;
-		
+
+	    if (precision <= 12){
+	        dimensions = dimension_cache[precision];
+	    } else {
+            int lat_times_to_cut = precision * 5 / 2;
+            int lng_times_to_cut = precision * 5 / 2 + (precision % 2 ? 1 : 0);
+
+            double width = 360.0;
+            double height = 180.0;
+
+            int i;
+            for(i = 0; i < lat_times_to_cut; i++)
+                height /= 2.0;
+
+            for(i = 0; i < lng_times_to_cut; i++)
+                width /= 2.0;
+
+            dimensions.width = width;
+            dimensions.height = height;
+	    }
 	}
 	
 	return dimensions;
