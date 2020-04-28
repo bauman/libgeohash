@@ -26,7 +26,9 @@ to build and test the python wrapper
 ```
 
 
-###Installation
+
+### Installation
+
 
 Linux and Mac users can install the package via pip.
 
