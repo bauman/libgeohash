@@ -30,8 +30,10 @@ to build and test the python wrapper
 
 Linux and Mac users can install the package via pip.
 
+Wheel file available for ubuntu bionic
+
 ```
-pip install libgeohash
+pip install pylibgeohash
 ```
 
 

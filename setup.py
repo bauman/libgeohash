@@ -16,9 +16,6 @@ setup(
     author='Dan Bauman',
     author_email='bauman.85@osu.edu',
     url='https://github.com/bauman/libgeohash',
-    long_description="""
-     
-    """,
     keywords=['geohash', 'geohashes'],
     classifiers=[
         'Intended Audience :: Developers',
