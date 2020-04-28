@@ -28,6 +28,24 @@
  *  OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#define MAX_LAT             90.0
+#define MIN_LAT             -90.0
+
+#define MAX_LONG            180.0
+#define MIN_LONG            -180.0
+
+#define NORTH               0
+#define EAST                1
+#define SOUTH               2
+#define WEST                3
+
+#define MAX_PRECISION       12
+#define MIN_PRECISION       1
+#define DEF_PRECISION       6
+
+#define LENGTH_OF_DEGREE	111100				// meters
+
+
 // Metric in meters
 typedef struct GeoBoxDimensionStruct {
 	

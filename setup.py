@@ -11,7 +11,7 @@ module1 = Extension(
 
 setup(
     name='pylibgeohash',
-    version='0.2.1',
+    version='0.2.2',
     description='Thin wrapper around the geohash codebase',
     author='Dan Bauman',
     author_email='bauman.85@osu.edu',

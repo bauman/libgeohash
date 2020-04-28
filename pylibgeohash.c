@@ -17,11 +17,11 @@ to_hash(PyObject* self, PyObject* args)
         PyErr_SetString(PyExc_TypeError, "parameters are float lat, float lon, int precision");
         return NULL;
     }
-    if (latitude < -90.0 || latitude > 90.0 || longitude > 180.0 || longitude < -180.0){
+    if (latitude < MIN_LAT || latitude > MAX_LAT || longitude > MAX_LONG || longitude < MIN_LONG){
         PyErr_SetString(PyExc_ValueError, "latitude must be within -90 to 90 and longitude must be within -180 to 180");
         return NULL;
     }
-    if (precision < 1 || precision > 12){
+    if (precision < MIN_PRECISION || precision > MAX_PRECISION){
         PyErr_SetString(PyExc_ValueError, "precision must be between 1 and 12");
         return NULL;
     }
@@ -43,7 +43,7 @@ static PyObject*
 from_hash(PyObject* self, PyObject* args)
 {
     const char * hash;
-    Py_ssize_t hashlen, maxlen=12, minlen=1;
+    Py_ssize_t hashlen, maxlen=MAX_PRECISION, minlen=MIN_PRECISION;
 
 
     if (!PyArg_ParseTuple(args, "s#", &hash, &hashlen)){
@@ -76,8 +76,9 @@ from_hash(PyObject* self, PyObject* args)
 static PyObject*
 neighbors(PyObject* self, PyObject* args) {
     const char *hash;
-    Py_ssize_t hashlen, maxlen=12, minlen=1;
-
+    Py_ssize_t hashlen, maxlen=MAX_PRECISION, minlen=MIN_PRECISION;
+    int i = 0;
+    // INPUT SANITY CHECKING
     if (!PyArg_ParseTuple(args, "s#", &hash, &hashlen)) {
         PyErr_SetString(PyExc_TypeError, "parameter must be a hash string");
         return NULL;
@@ -86,11 +87,22 @@ neighbors(PyObject* self, PyObject* args) {
         PyErr_SetString(PyExc_ValueError, "hash string must be between 1 and 12 characters long");
         return NULL;
     }
+    // THE CALL TO COMPUTE
     char** neighbors = geohash_neighbors(hash);
+    // COMPLETED THE CALL TO COMPUTE
+    // OUTPUT SANITY CHECKING
     if (!neighbors) {
         PyErr_SetString(PyExc_ArithmeticError, "unable to compute neighbors");
         return NULL;
     }
+    for (i=0; i<8; i++){
+        if(!neighbors[i]){
+            PyErr_SetString(PyExc_ArithmeticError, "problem computing at least one of the neighbors");
+            geohash_free_neighbors(neighbors);
+            return NULL;
+        }
+    }
+    // LOOKS SANE - PASSING BACK TO PYTHON
     PyObject * result =  Py_BuildValue(
         "(s,s,s,s,s,s,s,s)",
         neighbors[0], neighbors[1], neighbors[2], neighbors[3],
@@ -99,6 +111,7 @@ neighbors(PyObject* self, PyObject* args) {
     geohash_free_neighbors(neighbors);
     return result;
 }
+
 
 static PyMethodDef geohashHelperMethods[] =
         {
