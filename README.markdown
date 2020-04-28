@@ -1,7 +1,6 @@
 [![Build Status](https://travis-ci.org/bauman/libgeohash.svg?branch=master)](https://travis-ci.org/bauman/libgeohash)
-
 ![C/C++ CI](https://github.com/bauman/libgeohash/workflows/C/C++%20CI/badge.svg?branch=master)
-
+![Python package](https://github.com/bauman/libgeohash/workflows/Python%20package/badge.svg?branch=master)
 
 libgeohash
 ==========
