@@ -13,9 +13,7 @@ jobs:
   build_wheels:
 
     runs-on:
-    - ubuntu-16.04
     - ubuntu-18.04
-    - macos-10.15
     strategy:
       matrix:
         python-version: [3.5, 3.6, 3.7, 3.8]
