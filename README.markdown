@@ -49,9 +49,10 @@ free(hash);
 ```
 
 python 
+
 ```python
 import pylibgeohash as geohash
-hash = geohash.geohash_encode(lat, long, precision)
+hash = geohash.geohash_encode(lat, lon, precision)
 
 ```
 
@@ -65,9 +66,10 @@ GeoCoord coord = geohash_decode(char* hash);
 coord.latitude;
 coord.longitude;
 ```
+
 python 
-```
-import pylibgeohashas as geohash
+```python
+import pylibgeohash as geohash
 coord = geohash.geohash_decode("ezs42")
 coord["latitude"] 
 coord["longitude"]
@@ -83,7 +85,7 @@ neighbors[0];
 ```
 
 python 
-```
+```python
 neighbors = pylibgeohash.neighbors(str_hash)
 neighbors[0]
 ```
