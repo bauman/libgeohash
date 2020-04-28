@@ -34,18 +34,7 @@
 #include <string.h>
 #include <stdio.h>
 
-#define MAX_LAT             90.0
-#define MIN_LAT             -90.0
 
-#define MAX_LONG            180.0
-#define MIN_LONG            -180.0
-
-#define NORTH               0
-#define EAST                1
-#define SOUTH               2
-#define WEST                3
-
-#define LENGTH_OF_DEGREE	111100				// meters
 
 typedef struct IntervalStruct {
     
@@ -97,33 +86,45 @@ static char *odd_borders[] = {"bcfguvyz", "prxz", "0145hjnp", "028b"};
 int index_for_char(char c, char *string) {
     
     int index = -1;
-    int string_amount = strlen(string);
-    int i;
-    for(i = 0; i < string_amount; i++) {
-        
-        if(c == string[i]) {
-            
-            index = i; 
-            break;
+    if (c && string){
+        size_t string_amount = strlen(string);
+        int i;
+        for(i = 0; (size_t)i < string_amount; i++) {
+
+            if(c == string[i]) {
+
+                index = i;
+                break;
+            }
+
         }
-        
     }
-    
     return index;
 }
 
 char* get_neighbor(const char *hash, int direction) {
-    
-    int hash_length = strlen(hash);
-    
+    // SANITY CHECKS
+    if (!hash){
+        return NULL;
+    }
+    size_t hash_length = strlen(hash);
+    if (hash_length < MIN_PRECISION  || hash_length > MAX_PRECISION){
+        return NULL;
+    }
+    if (direction > WEST || direction < NORTH){
+        return NULL;
+    }
+
+    // LOOKS SANE, START COMPUTING
 	char last_char = hash[hash_length - 1];
     
-    int is_odd = hash_length % 2;
+    size_t is_odd = hash_length % 2;
     char **border = is_odd ? odd_borders : even_borders;
     char **neighbor = is_odd ? odd_neighbors : even_neighbors; 
     
-    char *base = (char *)malloc(sizeof(char) * hash_length + 1);
-    base[0] = '\0';
+    char *base = (char *)calloc(1, sizeof(char) * hash_length + 1);
+    if (!base){return NULL;}
+
     strncat(base, hash, hash_length - 1);
     
 	if(index_for_char(last_char, border[direction]) != -1){
@@ -134,30 +135,31 @@ char* get_neighbor(const char *hash, int direction) {
 
     
     int neighbor_index = index_for_char(last_char, neighbor[direction]);
-    last_char = char_map[neighbor_index];
-        
-    char *last_hash = (char *)malloc(sizeof(char) * 2);
-    last_hash[0] = last_char;
-    last_hash[1] = '\0';
-    strcat(base, last_hash);
-    free(last_hash);
-    
+	if (neighbor_index != -1){
+        last_char = char_map[neighbor_index];
+        char *last_hash = (char *)malloc(sizeof(char) * 2);
+        if (last_hash){
+            last_hash[0] = last_char;
+            last_hash[1] = '\0';
+            strcat(base, last_hash);
+            free(last_hash);
+        }
+	}
 	return base;
 }
 
 char* geohash_encode(double lat, double lng, int precision) {
     
-    if(precision < 1 || precision > 12)
-        precision = 6;
+    if(precision < MIN_PRECISION || precision > MAX_PRECISION)
+        precision = DEF_PRECISION;
     
     char* hash = NULL;
     
-    if(lat <= 90.0 && lat >= -90.0 && lng <= 180.0 && lng >= -180.0) {
+    if(lat <= MAX_LAT && lat >= MIN_LAT && lng <= MAX_LONG && lng >= MIN_LONG) {
         
-        hash = (char*)malloc(sizeof(char) * (precision + 1));
-        hash[precision] = '\0';
+        hash = (char*)calloc(1, sizeof(char) * (precision + 1));
         
-        precision *= 5.0;
+        precision *= 5;
         
         Interval lat_interval = {MAX_LAT, MIN_LAT};
         Interval lng_interval = {MAX_LONG, MIN_LONG};
@@ -213,8 +215,12 @@ GeoCoord geohash_decode(char *hash) {
     
     if(hash) {
         
-        int char_amount = strlen(hash);
-        
+        size_t char_amount = strlen(hash);
+        if (char_amount < MIN_PRECISION){
+            char_amount = 0;
+        } else if (char_amount > MAX_PRECISION){
+            char_amount = MAX_PRECISION;
+        }
         if(char_amount) {
             
             int char_mapIndex;
@@ -225,7 +231,7 @@ GeoCoord geohash_decode(char *hash) {
             int is_even = 1;
             double delta;
             int i, j;
-            for(i = 0; i < char_amount; i++) {
+            for(i = 0; (size_t)i < char_amount; i++) {
             
                 char_mapIndex = index_for_char(hash[i], (char*)char_map);
                 
@@ -307,7 +313,7 @@ GeoBoxDimension geohash_dimensions_for_precision(int precision) {
 	
 	if(precision > 0) {
 
-	    if (precision <= 12){
+	    if (precision <= MAX_PRECISION){
 	        dimensions = dimension_cache[precision];
 	    } else {
             int lat_times_to_cut = precision * 5 / 2;

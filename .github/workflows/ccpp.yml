@@ -9,8 +9,8 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-18.04
-
+    runs-on:
+    - ubuntu-18.04
     steps:
     - uses: actions/checkout@v2
     - name: cmake
@@ -19,3 +19,7 @@ jobs:
       run: make
     - name: test script
       run: make test
+    - uses: actions/upload-artifact@v2
+      with:
+        name: shared object
+        path: libgeohash.so

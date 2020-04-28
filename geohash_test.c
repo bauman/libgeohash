@@ -67,6 +67,7 @@ void checkHashes(char* hash, char* expected) {
     
     if(strcmp(hash, expected) != 0) {
         printf("Error: Expected hash = %s. (%s)\n", expected, hash);
+        exit(-11);
     }
 }
 
@@ -74,16 +75,24 @@ void checkNeighbors(char** neighbors, char** expectedNeighbors) {
  
     int i;
     for(i = 0; i < 8; i++)
-        if(strcmp(neighbors[i], expectedNeighbors[i]) != 0)
+        if(strcmp(neighbors[i], expectedNeighbors[i]) != 0){
             printf("Error: Expected hash = %s at index %i. (%s)\n", expectedNeighbors[i], i, neighbors[i]);
+            exit(-10);
+        }
+
 }
 
 int main() {
-
+    int i = 0;  // for test loops
     // Decoder
     
-    GeoCoord coord = geohash_decode("ezs42");
-    GeoCoord expectedCoord = {42.60498046875, -5.60302734375, 42.626953125, -5.5810546875, 42.5830078125, -5.625};
+    GeoCoord coord = geohash_decode("");
+    GeoCoord expectedCoord = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+    check_coords(coord, expectedCoord);
+
+
+    coord = geohash_decode("ezs42");
+    expectedCoord = (GeoCoord){42.60498046875, -5.60302734375, 42.626953125, -5.5810546875, 42.5830078125, -5.625};
     check_coords(coord, expectedCoord);
 
 
@@ -96,6 +105,8 @@ int main() {
     expectedCoord = (GeoCoord){40.018140748143196, -105.27485780417919, 40.01814141869545, -105.27485713362694, 40.018140077590942, -105.27485847473145};
     check_coords(coord, expectedCoord);
 
+
+    coord = geohash_decode("4444444444444444444444444444444444444444444444444444444");
     // bad hash characters should not crash it
     coord = geohash_decode("☀☎");
 
@@ -114,6 +125,11 @@ int main() {
     free(hash);
 
     hash = geohash_encode(40.018141, -105.274858, 0);
+    checkHashes(hash, "9xj5sm");
+    free(hash);
+
+
+    hash = geohash_encode(40.018141, -105.274858, 900000000); //lol enormous
     checkHashes(hash, "9xj5sm");
     free(hash);
 
@@ -138,6 +154,48 @@ int main() {
     geohash_free_neighbors(neighbors);
 
 
+    neighbors = geohash_neighbors("ezs42-  "); // truncates the last invalid character of and 2 off the corners
+    expectedNeighbors[0] = "ezs42- "; expectedNeighbors[1] = "ezs42-";
+    expectedNeighbors[2] = "ezs42- "; expectedNeighbors[3] = "ezs42-";
+    expectedNeighbors[4] = "ezs42- "; expectedNeighbors[5] = "ezs42-";
+    expectedNeighbors[6] = "ezs42- "; expectedNeighbors[7] = "ezs42-";
+    checkNeighbors(neighbors, expectedNeighbors);
+    geohash_free_neighbors(neighbors);
+
+    neighbors = geohash_neighbors("☀");
+    for(i = 0; i < 8; i++){
+        if (!neighbors[i]){
+            exit(-80);
+        }
+    }
+    geohash_free_neighbors(neighbors);
+
+    neighbors = geohash_neighbors("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+    for(i = 0; i < 8; i++){
+        // neighbors should be valid, but all individual ones should be null
+        if (!neighbors || neighbors[i]){
+            exit(-90);
+        }
+    }
+    geohash_free_neighbors(neighbors);
+
+    neighbors = geohash_neighbors("");  // invalid
+    for(i = 0; i < 8; i++){
+        // neighbors should be valid, but all individual ones should be null
+        if (!neighbors || neighbors[i]){
+            exit(-100);
+        }
+    }
+    geohash_free_neighbors(neighbors);
+
+
+    neighbors = geohash_neighbors("   ezs42");  // leading invalid chars generate neighbors
+    expectedNeighbors[0] = "   ezs43"; expectedNeighbors[1] = "   ezs49";
+    expectedNeighbors[2] = "   ezs48"; expectedNeighbors[3] = "   ezefx";
+    expectedNeighbors[4] = "   ezefr"; expectedNeighbors[5] = "   ezefp";
+    expectedNeighbors[6] = "   ezs40"; expectedNeighbors[7] = "   ezs41";
+    checkNeighbors(neighbors, expectedNeighbors);
+    geohash_free_neighbors(neighbors);
     return 0;
 }
 

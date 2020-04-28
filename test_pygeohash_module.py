@@ -84,3 +84,19 @@ def test_get_neighbors():
     assert neighbors[5] == "ezefp"
     assert neighbors[6] == "ezefr"
     assert neighbors[7] == "ezefx"
+
+
+def test_raises_on_bad_neighbor_call():
+    with raises(ValueError):
+        neighbors = pylibgeohash.geohash_neighbors("")
+
+
+def test_raises_on_bad_neighbor_call_invalid_str():
+    with raises(UnicodeDecodeError):
+        neighbors = pylibgeohash.geohash_neighbors("☀")
+
+
+def test_raises_on_bad_neighbor_call_invalid_str():
+    with raises(ArithmeticError):
+        neighbors = pylibgeohash.geohash_neighbors(" ")
+
