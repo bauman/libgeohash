@@ -79,6 +79,13 @@ the geohash. A GeoCoord also provides the bounding box for the geohash (north, e
 c
 ```
 char** geohash_neighbors(char* hash);
+neighbors[0];
+```
+
+python 
+```
+neighbors = pylibgeohash.neighbors(str_hash)
+neighbors[0]
 ```
 
 Uses the bounding box declared at hash and calculates the 8 neighboring boxes. An example is show below.
