@@ -16,8 +16,8 @@ script:
   - make
   - make test
   - python3 setup.py bdist_wheel
-  - pip3 install -y dist/pylibgeohash*
-  - pytest
+  - pip3 install  dist/pylibgeohash*
+  - pytest-3
 
 
 
