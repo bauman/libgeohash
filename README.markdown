@@ -102,6 +102,6 @@ pygeohash | AGPL | pure python | `pip install pygeohash` |  https://github.com/w
 Geohash | AGPL | pure python | `pip install geohash` | https://github.com/vinsci/geohash/
 geohash2 | AGPL | pure python | `pip install geohash2` | https://github.com/DBarthe/geohash
 python-geohash | Apache2 & MIT & BSD | python & c++ | `pip install python-geohash` | https://github.com/hkwi/python-geohash
-libgeohash | MIT | pure python | `pip install libgeohash | https://github.com/bashhike/libgeohash
+libgeohash | MIT | pure python | `pip install libgeohash` | https://github.com/bashhike/libgeohash
 geohashcx | GPLv3 | python + ffi to static bin | `pip install geohashcx` | https://github.com/aldnav/geohash   
 pylibgeohash | BSD | c | `pip install pylibgeohash` | https://github.com/bauman/libgeohash
