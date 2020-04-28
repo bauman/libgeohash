@@ -11,3 +11,7 @@ enable_testing()
 add_executable(gh_test geohash_test.c)
 target_link_libraries(gh_test geohash )
 
+add_test(
+    NAME librarytest
+    COMMAND gh_test
+)

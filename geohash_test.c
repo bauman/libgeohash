@@ -95,7 +95,10 @@ int main() {
     coord = geohash_decode("9xj5smj4w40");
     expectedCoord = (GeoCoord){40.018140748143196, -105.27485780417919, 40.01814141869545, -105.27485713362694, 40.018140077590942, -105.27485847473145};
     check_coords(coord, expectedCoord);
-    
+
+    // bad hash characters should not crash it
+    coord = geohash_decode("☀☎");
+
     // Encoder
 
     char* hash = geohash_encode(42.60498046875, -5.60302734375, 5);
@@ -133,6 +136,7 @@ int main() {
     checkNeighbors(neighbors, expectedNeighbors);
 
     geohash_free_neighbors(neighbors);
+
 
     return 0;
 }

@@ -50,6 +50,7 @@ typedef struct GeoCoordStruct {
     
 } GeoCoord;
 
+
 /*
  * Creates a the hash at the specified precision. If precision is set to 0.
  * or less than it defaults to 12.
@@ -75,4 +76,6 @@ extern void geohash_free_neighbors(char ** neighbors);
 /*
  * Returns the width and height of a precision value.
  */
+extern const GeoBoxDimension dimension_cache[];
+
 extern GeoBoxDimension geohash_dimensions_for_precision(int precision);
