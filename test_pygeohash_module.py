@@ -96,7 +96,8 @@ def test_raises_on_bad_neighbor_call_invalid_str():
         neighbors = pylibgeohash.geohash_neighbors("☀")
 
 
-def test_raises_on_bad_neighbor_call_invalid_str():
+
+def test_raises_on_bad_neighbor_call_empty_but_valid_str():
     with raises(ArithmeticError):
         neighbors = pylibgeohash.geohash_neighbors(" ")
 
