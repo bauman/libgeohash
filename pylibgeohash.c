@@ -11,9 +11,9 @@
 static PyObject*
 to_hash(PyObject* self, PyObject* args)
 {
-    float longitude, latitude;
+    double longitude, latitude;
     int precision;
-    if (!PyArg_ParseTuple(args, "ffi", &latitude, &longitude, &precision)){
+    if (!PyArg_ParseTuple(args, "ddi", &latitude, &longitude, &precision)){
         PyErr_SetString(PyExc_TypeError, "parameters are float lat, float lon, int precision");
         return NULL;
     }
