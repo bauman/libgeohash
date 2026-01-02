@@ -1,6 +1,4 @@
-[![Build Status](https://travis-ci.org/bauman/libgeohash.svg?branch=master)](https://travis-ci.org/bauman/libgeohash)
-![C/C++ CI](https://github.com/bauman/libgeohash/workflows/C/C++%20CI/badge.svg?branch=master)
-![Python package](https://github.com/bauman/libgeohash/workflows/Python%20package/badge.svg?branch=master)
+[![C/C++ CI](https://github.com/bauman/libgeohash/actions/workflows/ccpp.yml/badge.svg?branch=master)](https://github.com/bauman/libgeohash/actions/workflows/ccpp.yml)
 
 libgeohash
 ==========
@@ -105,12 +103,12 @@ below with each box representing the index of the array.
 
 
 ### Similar works 
-reponame | license | codebase  | install | link
---- | --- | --- | --- | --- 
-pygeohash | AGPL | pure python | `pip install pygeohash` |  https://github.com/wdm0006/pygeohash
-Geohash | AGPL | pure python | `pip install geohash` | https://github.com/vinsci/geohash/
-geohash2 | AGPL | pure python | `pip install geohash2` | https://github.com/DBarthe/geohash
-python-geohash | Apache2 & MIT & BSD | python & c++ | `pip install python-geohash` | https://github.com/hkwi/python-geohash
-libgeohash | MIT | pure python | `pip install libgeohash` | https://github.com/bashhike/libgeohash
-geohashcx | GPLv3 | python + ffi to static bin | `pip install geohashcx` | https://github.com/aldnav/geohash   
-pylibgeohash | BSD | c | `pip install pylibgeohash` | https://github.com/bauman/libgeohash
+| reponame       | license             | codebase                   | install                      | link                                   |
+|----------------|---------------------|----------------------------|------------------------------|----------------------------------------|
+| pygeohash      | AGPL                | pure python                | `pip install pygeohash`      | https://github.com/wdm0006/pygeohash   |
+| Geohash        | AGPL                | pure python                | `pip install geohash`        | https://github.com/vinsci/geohash/     |
+| geohash2       | AGPL                | pure python                | `pip install geohash2`       | https://github.com/DBarthe/geohash     |
+| python-geohash | Apache2 & MIT & BSD | python & c++               | `pip install python-geohash` | https://github.com/hkwi/python-geohash |
+| libgeohash     | MIT                 | pure python                | `pip install libgeohash`     | https://github.com/bashhike/libgeohash |
+| geohashcx      | GPLv3               | python + ffi to static bin | `pip install geohashcx`      | https://github.com/aldnav/geohash      |
+| pylibgeohash   | BSD                 | c                          | `pip install pylibgeohash`   | https://github.com/bauman/libgeohash   |

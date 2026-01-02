@@ -11,10 +11,10 @@
 static PyObject*
 to_hash(PyObject* self, PyObject* args)
 {
-    float longitude, latitude;
+    double longitude, latitude;
     int precision;
-    if (!PyArg_ParseTuple(args, "ffi", &latitude, &longitude, &precision)){
-        PyErr_SetString(PyExc_TypeError, "parameters are float lat, float lon, int precision");
+    if (!PyArg_ParseTuple(args, "ddi", &latitude, &longitude, &precision)){
+        PyErr_SetString(PyExc_TypeError, "parameters are double lat, double lon, int precision");
         return NULL;
     }
     if (latitude < MIN_LAT || latitude > MAX_LAT || longitude > MAX_LONG || longitude < MIN_LONG){
@@ -58,7 +58,7 @@ from_hash(PyObject* self, PyObject* args)
     GeoCoord coord = geohash_decode((char *) hash);
 
     PyObject * result =  Py_BuildValue(
-            "{s:f,s:f,s:f,s:f,s:f,s:f,s:{s:f,s:f}}",
+            "{s:d,s:d,s:d,s:d,s:d,s:d,s:{s:d,s:d}}",
             "latitude", coord.latitude,
             "longitude", coord.longitude,
             "north", coord.north,
@@ -115,10 +115,12 @@ neighbors(PyObject* self, PyObject* args) {
 
 static PyMethodDef geohashHelperMethods[] =
         {
-                {"to_hash", to_hash, METH_VARARGS, "Converts latitude / longitude to a string hash \nto_hash(float lat, float lon, int precision)\n"},
-                {"geohash_encode", to_hash, METH_VARARGS, "Converts latitude / longitude to a string hash \nto_hash(float lat, float lon, int precision)\n"},
+                {"to_hash", to_hash, METH_VARARGS, "Converts latitude / longitude to a string hash \nto_hash(double lat, double lon, int precision)\n"},
+                {"geohash_encode", to_hash, METH_VARARGS, "Converts latitude / longitude to a string hash \nto_hash(double lat, double lon, int precision)\n"},
+                {"encode", to_hash, METH_VARARGS, "Converts latitude / longitude to a string hash \nto_hash(double lat, double lon, int precision)\n"},
                 {"from_hash", from_hash, METH_VARARGS, "Converts a string hash to a latitude / longitude \nfrom_hash(string hash)\n"},
                 {"geohash_decode", from_hash, METH_VARARGS, "Converts a string hash to a latitude / longitude \nfrom_hash(string hash)\n"},
+                {"decode", from_hash, METH_VARARGS, "Converts a string hash to a latitude / longitude \nfrom_hash(string hash)\n"},
                 {"neighbors", neighbors, METH_VARARGS, "calculates the 8 neighboring boxes\nBox is as follows\n\t7 0 1\n\t6 x 2\n\t5 4 3\n"},
                 {"geohash_neighbors", neighbors, METH_VARARGS, "calculates the 8 neighboring boxes\nBox is as follows\n\t7 0 1\n\t6 x 2\n\t5 4 3\n"},
                 {NULL, NULL, 0, NULL}

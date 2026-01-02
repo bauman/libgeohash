@@ -10,16 +10,16 @@ jobs:
   build:
 
     runs-on:
-    - ubuntu-18.04
+    - ubuntu-24.04
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v5
     - name: cmake
       run: cmake .    
     - name: make
       run: make
     - name: test script
       run: make test
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v4
       with:
         name: shared object
         path: libgeohash.so
