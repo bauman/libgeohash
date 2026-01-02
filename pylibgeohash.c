@@ -58,7 +58,7 @@ from_hash(PyObject* self, PyObject* args)
     GeoCoord coord = geohash_decode((char *) hash);
 
     PyObject * result =  Py_BuildValue(
-            "{s:f,s:f,s:f,s:f,s:f,s:f,s:{s:f,s:f}}",
+            "{s:d,s:d,s:d,s:d,s:d,s:d,s:{s:d,s:d}}",
             "latitude", coord.latitude,
             "longitude", coord.longitude,
             "north", coord.north,

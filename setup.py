@@ -1,27 +1,17 @@
-
 from setuptools import setup, Extension
+from os import environ
+from pathlib import Path
 
-module1 = Extension(
-    'pylibgeohash',
-    include_dirs=['/usr/local/include'],
-    libraries=[],
-    library_dirs=['/usr/local/lib'],
-    sources=['pylibgeohash.c', 'geohash.c']
+include_dirs = [
+    str(Path(__file__).parent)
+]
+include_dirs.extend(environ.get("INCLUDE_DIR", ".").split(":"))
+setup_args = dict(
+    ext_modules = [
+        Extension('pylibgeohash',
+                  sources=['pylibgeohash.c', 'geohash.c'],
+                  include_dirs=include_dirs
+                  )
+    ]
 )
-
-setup(
-    name='pylibgeohash',
-    version='0.2.2',
-    description='Thin wrapper around the geohash codebase',
-    author='Dan Bauman',
-    author_email='bauman.85@osu.edu',
-    url='https://github.com/bauman/libgeohash',
-    keywords=['geohash', 'geohashes'],
-    classifiers=[
-        'Intended Audience :: Developers',
-        'Topic :: Software Development :: Libraries :: Python Modules',
-        'License :: OSI Approved :: BSD License',
-        'Programming Language :: Python :: 3',
-    ],
-    ext_modules=[module1]
-)
+setup(**setup_args)

@@ -1,0 +1,43 @@
+[project]
+name = "pylibgeohash"
+version = "0.2.3"
+description = "Thin wrapper around the geohash codebase"
+requires-python = ">=3.9"
+dependencies = []
+authors = [
+    {name="Dan Bauman"}
+]
+maintainers = [
+    {name="Dan Bauman"}
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = [""]
+exclude =  ['*c']
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+
+
+[tool.cibuildwheel.macos]
+before-all = ""
+archs = ["x86_64", "universal2", "arm64"]
+
+
+[[tool.cibuildwheel.overrides]]
+select = "*-musllinux*"
+before-all = "apk update && apk add cmake gcc g++ perl patch make autoconf automake python3-dev py3-build py3-pip "
+archs = ["x86_64"]
+
+[[tool.cibuildwheel.overrides]]
+select = "*-manylinux*"
+before-all = "dnf -y update && dnf install -y cmake gcc "
+archs = ["x86_64"]
+
+[[tool.cibuildwheel.overrides]]
+select = "*-macosx_x86_64"
+before-all = ""
+
