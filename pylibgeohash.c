@@ -117,8 +117,10 @@ static PyMethodDef geohashHelperMethods[] =
         {
                 {"to_hash", to_hash, METH_VARARGS, "Converts latitude / longitude to a string hash \nto_hash(double lat, double lon, int precision)\n"},
                 {"geohash_encode", to_hash, METH_VARARGS, "Converts latitude / longitude to a string hash \nto_hash(double lat, double lon, int precision)\n"},
+                {"encode", to_hash, METH_VARARGS, "Converts latitude / longitude to a string hash \nto_hash(double lat, double lon, int precision)\n"},
                 {"from_hash", from_hash, METH_VARARGS, "Converts a string hash to a latitude / longitude \nfrom_hash(string hash)\n"},
                 {"geohash_decode", from_hash, METH_VARARGS, "Converts a string hash to a latitude / longitude \nfrom_hash(string hash)\n"},
+                {"decode", from_hash, METH_VARARGS, "Converts a string hash to a latitude / longitude \nfrom_hash(string hash)\n"},
                 {"neighbors", neighbors, METH_VARARGS, "calculates the 8 neighboring boxes\nBox is as follows\n\t7 0 1\n\t6 x 2\n\t5 4 3\n"},
                 {"geohash_neighbors", neighbors, METH_VARARGS, "calculates the 8 neighboring boxes\nBox is as follows\n\t7 0 1\n\t6 x 2\n\t5 4 3\n"},
                 {NULL, NULL, 0, NULL}
