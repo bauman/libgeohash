@@ -198,9 +198,3 @@ int main() {
     geohash_free_neighbors(neighbors);
     return 0;
 }
-
-
-
-
-
-
